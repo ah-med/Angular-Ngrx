@@ -6,7 +6,7 @@ import { Product } from '../product';
 import { ProductService } from '../product.service';
 
 /* NgRx */
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'pm-product-list',
@@ -16,7 +16,7 @@ import { Store } from '@ngrx/store';
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
   errorMessage: string;
-
+  displayCode = true;
   products: Product[];
 
   // Used to highlight the selected product in the list
@@ -36,6 +36,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
       next: (products: Product[]) => this.products = products,
       error: (err: any) => this.errorMessage = err.error
     });
+    // TODO: Subscribe
+    this.store.pipe(select('products')).subscribe(
+      products => {
+        if(products) {
+          this.displayCode = products.showProductCode
+        }
+      }
+    )
   }
 
   ngOnDestroy(): void {
