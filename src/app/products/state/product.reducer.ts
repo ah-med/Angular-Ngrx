@@ -5,14 +5,19 @@ export interface State extends fromRoot.State {
     products: ProductState
 }
 
-
 export interface ProductState {
     showProductCode: boolean;
     currentProduct: Product;
     products: Product[];
 }
 
-export function reducer(state: ProductState, action): ProductState {
+const initialState: ProductState = {
+    showProductCode: false,
+    currentProduct: null,
+    products: []
+}; 
+
+export function reducer(state = initialState, action): ProductState {
     console.log('THE Incoming Action', action);
     console.log('The incoming state ', state);
     switch (action.type) {
