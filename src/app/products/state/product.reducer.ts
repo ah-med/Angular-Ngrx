@@ -8,12 +8,11 @@ export interface State extends fromRoot.State {
 
 export interface ProductState {
     showProductCode: boolean;
-    currentProductId: number | null;
+    currentProduct: Product;
     products: Product[];
-    error: string
 }
 
-export function reducer(state, action) {
+export function reducer(state: ProductState, action): ProductState {
     console.log('THE Incoming Action', action);
     console.log('The incoming state ', state);
     switch (action.type) {
