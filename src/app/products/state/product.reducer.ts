@@ -36,8 +36,6 @@ export const getProducts = createSelector(
 );
 
 export function reducer(state = initialState, action): ProductState {
-    console.log('THE Incoming Action', action);
-    console.log('The incoming state ', state);
     switch (action.type) {
 
         case 'TOGGLE PRODUCT CODE':
