@@ -1,51 +1,73 @@
-import { Product } from '../product';
-import * as fromRoot from '../../state/app.state';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Product } from "../product";
+import { ProductActions, ProductActionTypes } from "./product.actions";
+import * as fromRoot from "../../state/app.state";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
 
 export interface State extends fromRoot.State {
-    products: ProductState
+  products: ProductState;
 }
 
 export interface ProductState {
-    showProductCode: boolean;
-    currentProduct: Product;
-    products: Product[];
+  showProductCode: boolean;
+  currentProduct: Product;
+  products: Product[];
 }
 
 const initialState: ProductState = {
-    showProductCode: false,
-    currentProduct: null,
-    products: []
+  showProductCode: false,
+  currentProduct: null,
+  products: []
 };
 
-const getProductFeatureState = createFeatureSelector<ProductState>('products');
+const getProductFeatureState = createFeatureSelector<ProductState>("products");
 
 export const getShowProductCode = createSelector(
-    getProductFeatureState,
-    state => state.showProductCode
+  getProductFeatureState,
+  state => state.showProductCode
 );
 
 export const getCurrentProduct = createSelector(
-    getProductFeatureState,
-    state => state.currentProduct
+  getProductFeatureState,
+  state => state.currentProduct
 );
 
 export const getProducts = createSelector(
-    getProductFeatureState,
-    state => state.products
+  getProductFeatureState,
+  state => state.products
 );
 
-export function reducer(state = initialState, action): ProductState {
-    console.log('THE Incoming Action', action);
-    console.log('The incoming state ', state);
-    switch (action.type) {
-
-        case 'TOGGLE PRODUCT CODE':
-            return {
-                ...state,
-                showProductCode: action.payload
-            }
-        default:
-            return state
-    }
+export function reducer(
+  state = initialState,
+  action: ProductActions
+): ProductState {
+  switch (action.type) {
+    case ProductActionTypes.ToggleProductCode:
+      return {
+        ...state,
+        showProductCode: action.payload
+      };
+    case ProductActionTypes.SetCurrentProduct:
+      return {
+        ...state,
+        currentProduct: { ...action.payload }
+      };
+    case ProductActionTypes.InitializeCurrentProduct:
+      return {
+        ...state,
+        currentProduct: {
+          id: 0,
+          productName: '',
+          productCode: '',
+          description: '',
+          starRating: 0
+        }
+      };
+    case ProductActionTypes.ClearCurrentProduct:
+      return {
+        ...state,
+        currentProduct: null
+      };
+    default:
+      return state;
+  }
 }
